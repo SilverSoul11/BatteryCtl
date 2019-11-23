@@ -1,0 +1,29 @@
+#!/usr/bin/env python3
+import os
+
+f = open("/usr/share/batteryProfile", "r+")
+
+if(f.read() == "60%"):
+	print("System is currently charging to 60%")
+elif(f.read() == "100%"):
+	print("System is currently charging to 100%")
+f.close()
+
+print("Do you want to set a charging threshold? Enter 100 / 60: ")
+
+userInput = input()
+
+fw = open("/usr/share/batteryProfile", "w+")
+
+
+if("100" == userInput):
+	os.system(r"echo '\_SB.PCI0.LPCB.EC0.VPC0.SBMC 5' | sudo tee /proc/acpi/call")
+	fw.write("100")
+	print("system is now set to 100% threshold")
+
+elif("60" == userInput):
+	os.system(r"echo '\_SB.PCI0.LPCB.EC0.VPC0.SBMC 3' | sudo tee /proc/acpi/call")
+	fw.write("60")
+	print("system is now set to 60% threshold")
+
+
